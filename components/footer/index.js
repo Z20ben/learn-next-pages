@@ -1,5 +1,5 @@
-// import styles from './styles.module.css'
+import styles from './styles.module.css'
 
 export default function Footer() {
-  return <div className="text-3xl font-bold underline">Footer</div>
+  return <div className={styles.footer}>Footer</div>
 }
