@@ -1,8 +1,7 @@
-import Header from "@/components/header";
-import Footer from "@/components/footer";
-import Content from "@/components/content"
-import Layout from "@/layout";
 import { useEffect } from "react";
+import dynamic from "next/dynamic";
+
+const LayoutComponent = dynamic(() => import("@/layout"))
 
 export default function Main() {
   useEffect(() => {
@@ -15,9 +14,9 @@ export default function Main() {
 
   return (
     <div>
-      <Layout metaTitle="Home" metaDescription="Semua informasi home" >
+      <LayoutComponent metaTitle="Home" metaDescription="Semua informasi home" >
         <p>Home</p>
-      </Layout>
+      </LayoutComponent>
     </div>
   );
 }
