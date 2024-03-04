@@ -10,6 +10,7 @@ export default function Header() {
         <div><Link href="/">Home</Link></div>
         <div><Link href="/profile">Profile</Link></div>
         <div><Link href="/users">Users</Link></div>
+        <div><Link href="/notes">Notes</Link></div>
       </nav>
     </div>
   )
