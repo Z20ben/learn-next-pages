@@ -32,6 +32,6 @@
                 }
             }
         ],
-        "beforeStatementContinuationChars": "never"
+        "beforeStatementContinuationChars": 1
     }
 }
