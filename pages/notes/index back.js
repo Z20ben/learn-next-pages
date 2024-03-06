@@ -7,27 +7,14 @@ const LayoutComponent = dynamic(() => import("@/layout"))
 export default function Notes({ }) {
   const router = useRouter();
   const [notes, setNotes] = useState();
-
-  const HandleDelete = async (id) => {
-    try {
-      const response = await fetch(
-        `/api/notes/delete/${id}`)
-      const result = await response.json();
-      if (result?.success) {
-        router.reload();
-      }
-    } catch (error) { }
-  };
-
   useEffect(() => {
     async function fetchingData() {
-      const listNotes = await (await fetch("/api/notes")).json();
+      const res = await fetch("https://paace-f178cafcae7b.nevacloud.io/api/notes")
+      const listNotes = await res.json();
       setNotes(listNotes)
     }
     fetchingData();
   }, []);
-
-
 
   // console.log("notes =>", notes)
   return (
@@ -55,7 +42,7 @@ export default function Notes({ }) {
                       <Button onClick={() => router.push(`/notes/edit/${item?.id}`)} flex='1' colorScheme='orange'>
                         Edit
                       </Button>
-                      <Button onClick={() => HandleDelete(item?.id)} flex='1' colorScheme='red' >
+                      <Button flex='1' colorScheme='red' >
                         Delete
                       </Button>
                     </CardFooter>
@@ -74,4 +61,10 @@ export default function Notes({ }) {
 
     </>
   )
+}
+
+export async function getStaticProps() {
+  const res = await fetch('https://paace-f178cafcae7b.nevacloud.io/api/notes')
+  const notes = await res.json()
+  return { props: { notes }, revalidate: 10 }
 }

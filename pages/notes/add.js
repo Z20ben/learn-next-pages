@@ -15,13 +15,10 @@ export default function AddNotes({ }) {
 
   const handleSubmit = async () => {
     try {
-      const res = await fetch('https://paace-f178cafcae7b.nevacloud.io/api/notes', {
-        method: 'POST', headers: {
-          "Content-Type": "application/json",
-        },
+      const result = await (await fetch('/api/notes/add', {
+        method: 'POST',
         body: JSON.stringify(notes)
-      })
-      const result = await res.json()
+      })).json();
       if (result?.success) {
         router.push("/notes")
       }
@@ -63,8 +60,8 @@ export default function AddNotes({ }) {
   )
 }
 
-export async function getStaticProps() {
-  const res = await fetch('https://paace-f178cafcae7b.nevacloud.io/api/notes')
-  const notes = await res.json()
-  return { props: { notes }, revalidate: 10 }
-}
+// export async function getStaticProps() {
+//   const res = await fetch('https://paace-f178cafcae7b.nevacloud.io/api/notes')
+//   const notes = await res.json()
+//   return { props: { notes }, revalidate: 10 }
+// }
