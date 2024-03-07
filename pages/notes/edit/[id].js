@@ -12,6 +12,7 @@ import dynamic from "next/dynamic";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { useMutation } from "@/hooks/useMutation";
+import { useQueries } from "@/hooks/useQueries";
 
 const LayoutComponent = dynamic(() => import("@/layout"));
 
@@ -19,7 +20,11 @@ export default function EditNotes() {
   const { mutate } = useMutation();
   const router = useRouter();
   const { id } = router?.query;
+  // console.log("ini id kamu => ", id)
+  // const { data, isLoading, isError } = useQueries({ prefixUrl: `https://paace-f178cafcae7b.nevacloud.io/api/notes/${id}` })
+  // console.log("ini data kamu =>", data);
   const [notes, setNotes] = useState();
+
 
   const HandleSubmit = async () => {
     //   try {
@@ -44,7 +49,7 @@ export default function EditNotes() {
     //   } catch (error) {}
 
     try {
-      const response = await mutate({ url: `/api/notes/update/${id}`, method: "PATCH", payload: notes });
+      const response = await mutate({ url: `/api/notes/edit/${id}`, method: "PATCH", payload: notes });
       console.log("response => ", response)
       if (response?.success) {
         router.push("/notes")
