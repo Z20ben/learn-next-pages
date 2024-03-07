@@ -1,50 +1,65 @@
-
-
-import dynamic from "next/dynamic";
 import {
+  Button,
+  Card,
   Grid,
   GridItem,
-  Card,
   Heading,
-  Text,
-  Button,
   Input,
+  Text,
   Textarea,
 } from "@chakra-ui/react";
+import dynamic from "next/dynamic";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
+import { useMutation } from "@/hooks/useMutation";
 
 const LayoutComponent = dynamic(() => import("@/layout"));
 
 export default function EditNotes() {
+  const { mutate } = useMutation();
   const router = useRouter();
   const { id } = router?.query;
-  const [notes, setNotes] = useState()
+  const [notes, setNotes] = useState();
 
   const HandleSubmit = async () => {
+    //   try {
+    //     const response = await (
+    //       await fetch(
+    //         `https://paace-f178cafcae7b.nevacloud.io/api/notes/update/${id}`,
+    //         {
+    //           method: "PATCH",
+    //           headers: {
+    //             "Content-Type": "application/json",
+    //           },
+    //           body: JSON.stringify({
+    //             title: notes?.title,
+    //             description: notes?.description,
+    //           }),
+    //         }
+    //       )
+    //     ).json();
+    //     if (result?.success) {
+    //       router.push("/notes");
+    //     }
+    //   } catch (error) {}
+
     try {
-      const response = await fetch(
-        `https://paace-f178cafcae7b.nevacloud.io/api/notes/update/${id}`,
-        {
-          method: "PATCH",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ title: notes?.title, description: notes?.description }),
-        }
-      );
-      const result = await response.json();
-      if (result?.success) {
-        router.push("/notes");
+      const response = await mutate({ url: `/api/notes/update/${id}`, method: "PATCH", payload: notes });
+      console.log("response => ", response)
+      if (response?.success) {
+        router.push("/notes")
       }
-    } catch (error) { }
+    } catch (error) {
+
+    }
   };
 
   useEffect(() => {
     async function fetchingData() {
-      const res = await fetch(`https://paace-f178cafcae7b.nevacloud.io/api/notes/${id}`);
-      const listNotes = await res.json();
-      setNotes(listNotes?.data)
+      const listNotes = await (
+        await fetch(`https://paace-f178cafcae7b.nevacloud.io/api/notes/${id}`)
+      ).json();
+      setNotes(listNotes?.data);
     }
     fetchingData();
   }, [id]);
@@ -85,4 +100,3 @@ export default function EditNotes() {
     </>
   );
 }
-
