@@ -2,9 +2,11 @@ import { Box, Button, Flex, Grid, GridItem, Card, Heading, Text, Textarea, Input
 import dynamic from "next/dynamic";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
+import { useMutation } from "@/hooks/useMutation";
 
 const LayoutComponent = dynamic(() => import("@/layout"))
 export default function AddNotes({ }) {
+  const { mutate } = useMutation();
   const router = useRouter();
   const [notes, setNotes] = useState(
     {
@@ -15,19 +17,27 @@ export default function AddNotes({ }) {
 
   const handleSubmit = async () => {
     try {
-      const result = await (await fetch('/api/notes/add', {
-        method: 'POST',
-        body: JSON.stringify(notes)
-      })).json();
-      if (result?.success) {
+      const response = await mutate({ url: '/api/notes/add', payload: notes });
+      if (response?.success) {
         router.push("/notes")
       }
     } catch (error) {
 
     }
+    // try {
+    //   const result = await (await fetch('/api/notes/add', {
+    //     method: 'POST',
+    //     body: JSON.stringify(notes)
+    //   })).json();
+    //   if (result?.success) {
+    //     router.push("/notes")
+    //   }
+    // } catch (error) {
+
+    // }
+
   }
 
-  // console.log("notes =>", notes)
   return (
     <>
       <LayoutComponent metaTitle="Notes" metaDescription="Semua informasi catatan" >
