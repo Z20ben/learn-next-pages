@@ -4,11 +4,15 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { useQueries } from "@/hooks/useQueries";
 import { useMutation } from "@/hooks/useMutation";
+import useSWR from "swr";
+import fetcher from "@/utils/fetcher";
 
 const LayoutComponent = dynamic(() => import("@/layout"))
 export default function Notes({ }) {
   const { mutate } = useMutation();
-  const { data, isLoading } = useQueries({ prefixUrl: "/api/notes" })
+  // const { data, isLoading } = useQueries({ prefixUrl: "/api/notes" })
+  const { data, isLoading } = useSWR("/api/notes", fetcher, { revalidateonFocus: true })
+
 
   const router = useRouter();
   const [notes, setNotes] = useState();
