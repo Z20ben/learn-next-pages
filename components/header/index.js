@@ -8,17 +8,24 @@ import { useQueries } from "@/hooks/useQueries"
 import Cookies from "js-cookie"
 import { useMutation } from "@/hooks/useMutation"
 import { useRouter } from "next/router"
+import { useContext } from "react"
+import { UserContext } from "@/context/userContext"
 
 export default function Header() {
   const router = useRouter();
   const { mutate } = useMutation();
   // console.log("Cookiesnya => ", Cookies.get('user_token'))
-  const { data } = useQueries({
-    prefixUrl: 'https://paace-f178cafcae7b.nevacloud.io/api/user/me',
-    headers: {
-      'Authorization': `Bearer ${Cookies.get('user_token')}`
-    }
-  })
+
+  // jika menggunakan context maka data nya 
+  const UserData = useContext(UserContext)
+
+  // sebelum menggunakan statemanagement dengan Context kita harus memanggil api nya terlebih dahulu 
+  // const { data } = useQueries({
+  //   prefixUrl: 'https://paace-f178cafcae7b.nevacloud.io/api/user/me',
+  //   headers: {
+  //     'Authorization': `Bearer ${Cookies.get('user_token')}`
+  //   }
+  // })
   const HandleLogout = async () => {
     const response = await mutate({
       url: 'https://paace-f178cafcae7b.nevacloud.io/api/logout',
@@ -45,7 +52,7 @@ export default function Header() {
         <div><Link href="/notes">Notes</Link></div>
         <div><Menu>
           <MenuButton as={Button} rightIcon={<ChevronDownIcon />}>
-            {data?.data?.name}
+            {UserData?.name}
           </MenuButton>
           <MenuList>
             <MenuItem onClick={() => HandleLogout()}>Logout</MenuItem>
