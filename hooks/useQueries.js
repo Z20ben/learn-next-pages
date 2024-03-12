@@ -1,8 +1,7 @@
 import { useCallback, useEffect, useState } from "react"
 
 export const useQueries = (
-  { prefixUrl = "" },
-  callback = {
+  { prefixUrl = "", headers = {} }, callback = {
     onSuccess: () => { },
   }
 ) => {
@@ -12,16 +11,19 @@ export const useQueries = (
     isLoading: true,
     isError: false,
   })
+  // console.log('headers up -> ', headers);
 
-  const fetchingData = useCallback(async ({ url = "", method = "GET" } = {}) => {
+  const fetchingData = useCallback(async ({ url = "", method = "GET", headers = {} } = {}) => {
     setData({
       ...data,
       isLoading: true,
     })
+    // console.log('headers -> ', headers)
     try {
       const result = await (await fetch(url, {
-        method,
+        method, headers
       })).json();
+      // console.log("ini useq result", data)
 
       setData({
         ...data,
@@ -40,7 +42,7 @@ export const useQueries = (
 
   useEffect(() => {
     if (prefixUrl) {
-      fetchingData({ url: prefixUrl })
+      fetchingData({ url: prefixUrl, headers: headers })
     }
   }, [prefixUrl])
 

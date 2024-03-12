@@ -21,14 +21,20 @@ export default function EditNotes() {
   const { id } = router?.query;
   const [notes, setNotes] = useState();
   const { mutate } = useMutation();
-  const { data: listNotesQueries } = useQueries({ prefixUrl: id ? `/api/notes/edit/${id}` : `` }, {
+  // const { data: listNotesQueries } = useQueries({ prefixUrl: id ? `https://paace-f178cafcae7b.nevacloud.io/api/notes/${id}` : ``, }, {
+  //   onSuccess: (result) => {
+  //     setNotes(result?.data)
+  //   }
+  // })
+
+  const { data: listNotesQueries } = useQueries({ prefixUrl: id ? `/api/notes/${id}` : `` }, {
     onSuccess: (result) => {
-      if (result?.data) {
+      if (result) {
         setNotes(result?.data)
       }
     }
   })
-  console.log("listnotesqueries => ", listNotesQueries)
+  console.log("data listnotesqueries => ", listNotesQueries)
 
   const HandleSubmit = async () => {
     //   try {
