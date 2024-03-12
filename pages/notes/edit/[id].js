@@ -17,14 +17,24 @@ import { useQueries } from "@/hooks/useQueries";
 const LayoutComponent = dynamic(() => import("@/layout"));
 
 export default function EditNotes() {
-  const { mutate } = useMutation();
   const router = useRouter();
   const { id } = router?.query;
-  // console.log("ini id kamu => ", id)
-  // const { data, isLoading, isError } = useQueries({ prefixUrl: `https://paace-f178cafcae7b.nevacloud.io/api/notes/${id}` })
-  // console.log("ini data kamu =>", data);
   const [notes, setNotes] = useState();
+  const { mutate } = useMutation();
+  // const { data: listNotesQueries } = useQueries({ prefixUrl: id ? `https://paace-f178cafcae7b.nevacloud.io/api/notes/${id}` : ``, }, {
+  //   onSuccess: (result) => {
+  //     setNotes(result?.data)
+  //   }
+  // })
 
+  const { data: listNotesQueries } = useQueries({ prefixUrl: id ? `/api/notes/${id}` : `` }, {
+    onSuccess: (result) => {
+      if (result) {
+        setNotes(result?.data)
+      }
+    }
+  })
+  console.log("data listnotesqueries => ", listNotesQueries)
 
   const HandleSubmit = async () => {
     //   try {
@@ -58,16 +68,6 @@ export default function EditNotes() {
 
     }
   };
-
-  useEffect(() => {
-    async function fetchingData() {
-      const listNotes = await (
-        await fetch(`https://paace-f178cafcae7b.nevacloud.io/api/notes/${id}`)
-      ).json();
-      setNotes(listNotes?.data);
-    }
-    fetchingData();
-  }, [id]);
 
   return (
     <>

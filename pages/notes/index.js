@@ -6,6 +6,7 @@ import { useQueries } from "@/hooks/useQueries";
 import { useMutation } from "@/hooks/useMutation";
 import useSWR from "swr";
 import fetcher from "@/utils/fetcher";
+// import AddModal from "./AddModal";
 
 const LayoutComponent = dynamic(() => import("@/layout"))
 export default function Notes({ }) {
@@ -16,6 +17,14 @@ export default function Notes({ }) {
 
   const router = useRouter();
   const [notes, setNotes] = useState();
+
+  // const [isModalOpen, setIsModalOpen] = useState(false);
+  // const handleAddButtonClick = () => {
+  //   setIsModalOpen(true);
+  // };
+  // const handleCloseModal = () => {
+  //   setIsModalOpen(false);
+  // };
 
   const HandleDelete = async (id) => {
     try {
@@ -41,6 +50,8 @@ export default function Notes({ }) {
         <Box padding='5'>
           <Flex justifyContent='end'>
             <Button colorScheme={'blue'} onClick={() => router.push("/notes/add")}>Add Notes</Button>
+            {/* <Button colorScheme="blue" onClick={handleAddButtonClick}>Add Note</Button> */}
+            {/* <AddModal isOpen={isModalOpen} onClose={handleCloseModal} /> */}
           </Flex>
           {isLoading ? (
             <Flex alignItems={'center'} justifyContent={'center'}>
